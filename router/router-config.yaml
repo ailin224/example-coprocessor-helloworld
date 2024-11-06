@@ -7,6 +7,19 @@ telemetry:
 
 coprocessor:
   url: http://localhost:3007
-  router:
-    request:
+  router: # This coprocessor hooks into the `RouterService`
+    request: # By including this key, the `RouterService` sends a request to the coprocessor whenever it first receives a client request.
+      headers: true # These boolean properties indicate which request data to include in the coprocessor request. All are optional and false by default.
+      body: true
+      context: true
+    response: # By including this key, the `RouterService` sends a request to the coprocessor whenever it's about to send response data back to the client.
+      body: true
       headers: true
+      context: true
+      status_code: true
+  subgraph:
+    all:
+      request:
+        body: true
+        headers: true
+        service_name: true

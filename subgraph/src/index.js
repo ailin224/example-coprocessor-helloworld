@@ -14,8 +14,17 @@ const typeDefs = parse(
     .join("\n")
 );
 
+const consoleLogPlugin = {
+  // Fires whenever a GraphQL request is received from a client.
+  requestDidStart(requestContext) {
+    console.log('Request started! Query:\n' +
+      requestContext.request.query);
+  },
+};
+
 const server = new ApolloServer({
   schema: buildSubgraphSchema({ typeDefs, resolvers }),
+  plugins: [consoleLogPlugin],
 });
 
 const { url } = await startStandaloneServer(server, {
