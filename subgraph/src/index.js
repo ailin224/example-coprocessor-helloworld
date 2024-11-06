@@ -1,10 +1,12 @@
 import fs from "fs";
 import path from "path";
+import DataLoader from 'dataloader';
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { buildSubgraphSchema } from "@apollo/subgraph";
 import { parse } from "graphql";
 import resolvers from "./resolvers.js";
+import { createVideosWorkflowExecutor } from "./workflowExecutor.js";
 
 const typeDefs = parse(
   fs
@@ -27,8 +29,15 @@ const server = new ApolloServer({
   plugins: [consoleLogPlugin],
 });
 
+const videoDataloader = new DataLoader(createVideosWorkflowExecutor);
+
 const { url } = await startStandaloneServer(server, {
   listen: { port: 4001 },
+  context: () => {
+    return {
+      videoDataloader,
+    };
+  }
 });
 
 console.log(`🚀 Subgraph ready at: ${url}`);

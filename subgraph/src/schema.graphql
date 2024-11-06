@@ -3,7 +3,7 @@ type Image {
   imageUrl: String!
 }
 
-type Video {
+type Video @key(fields: "id") {
   id: ID!
   videoUrl: String!
 }
