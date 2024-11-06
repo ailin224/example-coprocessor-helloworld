@@ -3,6 +3,7 @@ schema
   @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
 {
   query: Query
+  mutation: Mutation
 }
 
 directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
@@ -18,6 +19,19 @@ directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boole
 directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
 
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+union Asset
+  @join__type(graph: SUBGRAPH)
+  @join__unionMember(graph: SUBGRAPH, member: "Image")
+  @join__unionMember(graph: SUBGRAPH, member: "Video")
+ = Image | Video
+
+type Image
+  @join__type(graph: SUBGRAPH)
+{
+  id: ID!
+  imageUrl: String!
+}
 
 scalar join__FieldSet
 
@@ -39,8 +53,21 @@ enum link__Purpose {
   EXECUTION
 }
 
+type Mutation
+  @join__type(graph: SUBGRAPH)
+{
+  createImagesAndVideos: [Asset]
+}
+
 type Query
   @join__type(graph: SUBGRAPH)
 {
   hello: String
+}
+
+type Video
+  @join__type(graph: SUBGRAPH)
+{
+  id: ID!
+  videoUrl: String!
 }
