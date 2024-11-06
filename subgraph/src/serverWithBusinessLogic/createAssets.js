@@ -24,3 +24,13 @@ export const createVideos = async (ids) => {
     }
     return videos;
 }
+
+export const createVideosWithPlaceholder = async (ids) => {
+    const videos = [];
+    for (let i = 0; i < ids.length; i++) {
+        videos.push({
+            id: ids[i],
+        });
+    }
+    return videos;
+}

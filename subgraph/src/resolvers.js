@@ -17,6 +17,11 @@ const resolvers = {
       return 'Video';
     },
   },
+  Video: {
+    async __resolveReference(videoRepresentation, { videoDataloader }) {
+      return await videoDataloader.load(videoRepresentation.id);
+    },
+  },
 };
 
 export default resolvers;
