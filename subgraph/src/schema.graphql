@@ -1,3 +1,19 @@
+type Image {
+  id: ID!
+  imageUrl: String!
+}
+
+type Video @key(fields: "id") {
+  id: ID!
+  videoUrl: String!
+}
+
+union Asset = Image | Video
+
 type Query {
   hello: String
+}
+
+type Mutation {
+  createImagesAndVideos: [Asset]
 }
